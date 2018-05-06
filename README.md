@@ -1,6 +1,8 @@
 # monitoringday_alpha
 Temporary git for monitoring day
 
+To execute
+
 To generate jar file : 
 mvn clean install
 

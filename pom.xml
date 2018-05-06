@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -92,7 +93,6 @@
 			<groupId>io.prometheus</groupId>
 			<artifactId>simpleclient_spring_boot</artifactId>
 			<version>0.1.0</version>
-
 		</dependency>
 
 	</dependencies>

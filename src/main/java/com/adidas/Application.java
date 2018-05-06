@@ -5,8 +5,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import com.adidas.domain.Article;
-import com.adidas.repository.ArticleRepository;
+import com.adidas.domain.Inventory;
+import com.adidas.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +21,7 @@ import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
 public class Application {
 
 	@Autowired
-	ArticleRepository articleRepository;
+	InventoryRepository inventoryRepository;
 	
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -30,11 +30,24 @@ public class Application {
     @PostConstruct
 	public void init() {
 
-		Set<Article> set = new HashSet<>();
-		set.add(new Article("Stan Smith", "001.jpg" ,"120"));
-		set.add(new Article("NPM", "002.jpg" ,"200"));
-		set.add(new Article("Gazelle", "003.jpg" ,"90"));
-		articleRepository.save(set);
+		Set<Inventory> set = new HashSet<>();
+
+		set.add(new Inventory("C77124","SuperStar M01" ,"WH1" ,1000));
+		set.add(new Inventory("C77125","SuperStar M02" , "WH1" ,2000));
+		set.add(new Inventory("C77126","SuperStar M03"  ,"WH1" ,3000));
+		set.add(new Inventory("C77127","SuperStar M04"  ,"WH1" ,500));
+
+		set.add(new Inventory("C77124","SuperStar M01" , "WH2" ,100));
+		set.add(new Inventory("C77125","SuperStar M02" , "WH2" ,200));
+		set.add(new Inventory("C77126","SuperStar M03" , "WH2" ,300));
+		set.add(new Inventory("C77127","SuperStar M04" , "WH2" ,0));
+
+		set.add(new Inventory("C77124","SuperStar M01" , "WH3" ,5000));
+		set.add(new Inventory("C77125","SuperStar M02" , "WH3" ,400));
+		set.add(new Inventory("C77126","SuperStar M03" , "WH3" ,0));
+		set.add(new Inventory("C77127","SuperStar M04" , "WH3" ,0));
+
+		inventoryRepository.save(set);
 	}    
     
 }
