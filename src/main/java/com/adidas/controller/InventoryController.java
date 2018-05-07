@@ -69,7 +69,7 @@ public class InventoryController {
 	public List<Inventory> getModelInventory(@PathVariable String modelId){
 		//Counter: added 1 when we access to the /path
 		requests.labels("getModelInventory").inc();
-		log.info("called getModelInventory);
+		log.info("called getModelInventory");
 		//Histogram: time request
 		Histogram.Timer requestTimer = requestLatency.labels("getModelInventory").startTimer();
 		try {
