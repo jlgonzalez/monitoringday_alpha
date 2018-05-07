@@ -2,6 +2,7 @@
 Temporary git for monitoring day
 
 To execute
+mvn spring-boot:run
 
 To generate jar file : 
 mvn clean install

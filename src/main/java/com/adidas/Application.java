@@ -7,11 +7,14 @@ import javax.annotation.PostConstruct;
 
 import com.adidas.domain.Inventory;
 import com.adidas.repository.InventoryRepository;
+import com.adidas.filter.TraceFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
 import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 // Add a Prometheus metrics enpoint to the route `/prometheus`. `/metrics` is already taken by Actuator.
@@ -48,6 +51,17 @@ public class Application {
 		set.add(new Inventory("C77127","SuperStar M04" , "WH3" ,0));
 
 		inventoryRepository.save(set);
-	}    
+	}
+
+	@Bean
+	public FilterRegistrationBean myFilterBean() {
+		final FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+		filterRegBean.setFilter(new TraceFilter());
+		filterRegBean.addUrlPatterns("/*");
+		filterRegBean.setEnabled(Boolean.TRUE);
+		filterRegBean.setName("myFilterBean");
+		filterRegBean.setAsyncSupported(Boolean.TRUE);
+		return filterRegBean;
+	}
     
 }

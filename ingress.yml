@@ -1,0 +1,14 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: md-inventory-svc
+spec:
+  rules:
+    - host: md.inventory.svc.f24sd.k8s.asgard.dub.aws.k8s.3stripes.net
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: md-inventory-svc
+              servicePort: 8080
