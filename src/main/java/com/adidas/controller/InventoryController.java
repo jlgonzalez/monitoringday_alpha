@@ -15,6 +15,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.core.env.Environment;
+
 import java.util.List;
 
 
@@ -29,7 +31,7 @@ public class InventoryController {
 			.register();    // Register must be called to add it to the output
 
 	//Counter
-	static final Counter requests = Counter.build()
+	static final Counter requestsCounter = Counter.build()
 			.name("requests_total")
 			.help("Total requests.")
 			.labelNames("method")
@@ -37,10 +39,9 @@ public class InventoryController {
 
 	private static final Log log = LogFactory.getLog(InventoryController.class);
 
-	private static final String X_CORRELATION_ID = "x-correlation-id";
-
 	@Autowired
 	InventoryRepository inventoryRepository;
+
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -52,15 +53,13 @@ public class InventoryController {
 	@GetMapping("/inventory")
 	public Iterable<Inventory> getInventory() {
 		//Counter: added 1 when we access to the /path
-		requests.labels("getInventory").inc();
-		log.info("called getInventory");
-		//Histogram: time request
+		requestsCounter.labels("getInventory").inc();
+ 		//Histogram: time request
 		Histogram.Timer requestTimer = requestLatency.labels("getInventory").startTimer();
-
 		try {
 			return inventoryRepository.findAll();
 		} finally {
-			// Stop the histogram timer.
+			//Histogram:  Stop the histogram timer.
 			requestTimer.observeDuration();
 		}
 	}
@@ -68,14 +67,13 @@ public class InventoryController {
 	@GetMapping("/inventory/{modelId}")
 	public List<Inventory> getModelInventory(@PathVariable String modelId){
 		//Counter: added 1 when we access to the /path
-		requests.labels("getModelInventory").inc();
-		log.info("called getModelInventory");
-		//Histogram: time request
+		requestsCounter.labels("getModelInventory").inc();
+ 		//Histogram: time request
 		Histogram.Timer requestTimer = requestLatency.labels("getModelInventory").startTimer();
 		try {
 			return inventoryRepository.findByModelId(modelId);
 		} finally {
-			// Stop the histogram timer.
+			//Histogram:  Stop the histogram timer.
 			requestTimer.observeDuration();
 		}
 	}
@@ -83,15 +81,13 @@ public class InventoryController {
 	@GetMapping("/inventory/{modelId}/warehouse/{warehouseId}")
 	public  List<Inventory> getModelInventoryByWarehouse( @PathVariable String modelId, @PathVariable String warehouseId){
 		//Counter: added 1 when we access to the /path
-		requests.labels("getModelInventoryByWarehouse").inc();
-		log.info("called getModelInventoryByWarehouse");
-		//Histogram: time request
+		requestsCounter.labels("getModelInventoryByWarehouse").inc();
+ 		//Histogram: time request
 		Histogram.Timer requestTimer = requestLatency.labels("getModelInventoryByWarehouse").startTimer();
-
 		try {
 			return inventoryRepository.findByModelIdAndWarehouseId(modelId,warehouseId);
 		} finally {
-			// Stop the histogram timer.
+			//Histogram: Stop the histogram timer.
 			requestTimer.observeDuration();
 		}
 	}
